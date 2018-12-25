@@ -17,5 +17,6 @@ There are 3 projects in CMakeFileList.txt.
   write the decrypted text into ok.txt
   You can see that only N, E is stored in this program
   
-### Note: be carefully to store your private key [N, D] so that you can make your license 
+### Note: 
+be carefully to store your private key [N, D] so that you can make your license 
 be in safe state.
