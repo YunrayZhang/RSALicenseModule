@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.09)
 project(RsaLicenseLib)
 
 set(CMAKE_CXX_STANDARD 14)
+set(OUTDIR ~zhangyl-j)
 #set(RSA_INCLUDE /Users/zhangyl-j/cryptopp)
 
 #include_directories(${RSA_INCLUDE})
@@ -29,4 +30,6 @@ else()
     set(SOURCE get_machineid_unix.cpp)
 endif()
 add_executable(GetMachineFP ${HEADER} ${SOURCE} get_machineid_main.cpp get_machineid.cpp)
+install(TARGETS GetMachineFP
+        RUNTIME DESTINATION ${OUTDIR})
 
