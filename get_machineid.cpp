@@ -1,4 +1,5 @@
 #include "getmachineid_internal.h"
+#include <string.h>
 #include <ctype.h>
 #include <sstream>
 
@@ -60,7 +61,7 @@ const std::string  getSystemUniqueId()
     {
         char num[16];
         snprintf( num, 16, "%x", id[i] );
-        buf << "-";
+        buf << "»";
         switch( strlen( num ))
         {
             case 1: buf << "000"; break;
@@ -69,10 +70,51 @@ const std::string  getSystemUniqueId()
         }
         buf << num;
     }
+    std::string strBuf = buf.str();
+    std::transform(strBuf.begin(), strBuf.end(), strBuf.begin(), ::toupper);
 
-    const char* p = buf.str().data();
-    std::stringstream upperString("");
-    while ( *p ) { upperString<<toupper( *p ); p++; }
+    return strBuf;
+}
 
-    return upperString.str();
+bool validate_machine_fp(std::string testIdString)
+{
+    // unpack the given string. parse failures return false.
+    char * testString = new char[testIdString.size()+1];
+    memset(testString, 0, testIdString.size()+1);
+    memcpy(testString, testIdString.data(), testIdString.size());
+    char* testName = strtok( testString, "»" );
+    if ( !testName ) return false;
+
+    u16 testId[5];
+    for ( u32 i = 0; i < 5; i++ )
+    {
+        char* testNum = strtok( NULL, "»" );
+        if ( !testNum ) return false;
+        testId[i] = (u16)(strtol( testNum, NULL, 16 ));
+    }
+    unsmear( testId );
+
+    // make sure this id is valid - by looking at the checkdigits
+    u16 check = 0;
+    for ( u32 i = 0; i < 4; i++ )
+        check += testId[i];
+    if ( check != testId[4] ) return false;
+
+    // get the current system information
+    u16 systemId[5];
+    memcpy( systemId, computeSystemUniqueId(), sizeof( systemId ));
+    unsmear( systemId );
+
+    // now start scoring the match
+    u32 score = 0;
+
+    for ( u32 i = 0; i < 4; i++ )
+        if ( testId[i] == systemId[i] )
+            score++;
+
+    if ( !strcmp( getMachineName(), testName ))
+        score++;
+
+    // if we score 3 points or more then the id matches.
+    return ( score >= 3 ) ? true : false;
 }
