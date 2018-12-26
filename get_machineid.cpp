@@ -2,6 +2,8 @@
 #include <string.h>
 #include <ctype.h>
 #include <sstream>
+#include <stdio.h>
+#include <algorithm>
 
 u16 mask[5] = { 0x4e25, 0xf4a1, 0x5437, 0xab41, 0x0000 };
 
@@ -60,7 +62,11 @@ const std::string  getSystemUniqueId()
     for ( u32 i = 0; i < 5; i++ )
     {
         char num[16];
+#if defined(WIN32)
+        _snprintf_s( num, 16, "%x", id[i] );        
+#else
         snprintf( num, 16, "%x", id[i] );
+#endif
         buf << "»";
         switch( strlen( num ))
         {
