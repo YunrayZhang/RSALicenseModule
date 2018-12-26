@@ -1,6 +1,5 @@
 #include <string>
 #include <iostream>
-#include <unistd.h>
 #include "rsalicense.h"
 static std::string N = "D083F8CC87B311A2C93A68598F4302AAAFC8972D8E46DF2D63445F404781F8A24A862CB36B50860B8E7FDD4E0F6EFFF2D2779397ED2BC65DE2841CD27EF2B031C713B9D9C9F5E2479FD15716934E08616699F025DD0C86399FF6814B7470B6CDF7EA5A15F369355E539541918B9D9E03DC2A8E283B7FD05B676BA4313452B109";
 static std::string E = "10001";
@@ -13,11 +12,6 @@ int main (int argc, char *argv[]) {
     if(argc != 2 )
     {
         usage();
-        return -1;
-    }
-    if( access(argv[1], F_OK))
-    {
-        std::cerr<<" license file is not exist"<<std::endl;
         return -1;
     }
 
