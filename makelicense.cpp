@@ -61,3 +61,4 @@ int main(int argc, char * argv[])
     fclose(licFile);
     return 0;
 }
+
