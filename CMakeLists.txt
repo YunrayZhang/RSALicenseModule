@@ -4,6 +4,7 @@ project(RsaLicenseLib)
 set(CMAKE_CXX_STANDARD 14)
 set(OUTDIR ~zhangyl-j)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY output)
+add_subdirectory(gtest)
 #set(RSA_INCLUDE /Users/zhangyl-j/cryptopp)
 
 #include_directories(${RSA_INCLUDE})
