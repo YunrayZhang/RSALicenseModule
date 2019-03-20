@@ -183,7 +183,7 @@ BigInteger BigInteger::multiply(const BigInteger & val) const {
             temp = temp.shiftLeft(i);    // 移位对齐
             ans = ans.add(temp);
         }
-    ans.is_negative = !(is_negative == val.is_negative);
+    ans.is_negative = is_negative != val.is_negative;
     return ans;
 }
 
@@ -260,7 +260,7 @@ BigInteger BigInteger::divideAndRemainder(const BigInteger & val, BigInteger & m
             temp = temp.shiftLeft(len);// 移位后表明当前的a是b的几倍
         ans = ans.add(temp);
     }
-    ans.is_negative = !(is_negative==val.is_negative);
+    ans.is_negative = is_negative != val.is_negative;
     m.data = a.data;
     m.is_negative = is_negative;
     return ans;
@@ -332,8 +332,8 @@ BigInteger BigInteger::modInverse(const BigInteger & m) {
  * 参数含义:len代表移位的位数
  */
 BigInteger BigInteger::shiftLeft(const unsigned len) {
-    int index = len>>base_bit;    // 大整数每一位需要移动多少位
-    int shift = len&base_temp;    // 还剩下多少位
+    unsigned int index = len>>base_bit;    // 大整数每一位需要移动多少位
+    unsigned int shift = len&base_temp;    // 还剩下多少位
     BigInteger ans(*this);
 
     int inc = (shift==0) ? index : index+1;// 有多余的位要多开大整数的一位
@@ -610,53 +610,50 @@ int BigInteger::hexToNum(char ch) {
     return ans;
 }
 
-BigInteger::BigInteger(const unsigned char * binData, int length) {
-    const unsigned char * tmpCursor = binData + length;
-    int round = length / 4;
-    int left = length % 4;
-    for(int i = 0; i < round; i++)
-    {
-        base_t value = 0;
-        value |= binData[i*4+0];
-        value <<= 8;
-        value |= binData[i*4+1];
-        value <<= 8;
-        value |= binData[i*4+2];
-        value <<= 8;
-        value |= binData[i*4+3];
-        data.push_back(value);
-    }
-    base_t lastvalue = 0;
-    for( int j = 0 ; j < left; j++)
-    {
-        lastvalue <<= 8;
-        lastvalue |= binData[4*round + j];
-    }
-    for( int k = left; k < 4; k++)
-    {
-        lastvalue <<= 8;
-        lastvalue |= 0;
-    }
-    data.push_back(lastvalue);
+BigInteger::BigInteger(const unsigned char * binData, int length):BigInteger(binaryToHex(binData, length)) {
+
 }
 
 std::vector<unsigned char> BigInteger::toBinaryStream() const {
-    std::vector<unsigned char> binData;
-    for (auto iter = data.begin(); iter != data.end(); iter++)
+    std::vector<unsigned char> result;
+    std::string tmpString = toString();
+    for (auto iter = tmpString.begin(); iter != tmpString.end(); )
     {
-
-        base_t tmpInt = *iter;
-        unsigned char first = (tmpInt & 0xff000000)>>24;
-        unsigned char second = (tmpInt & 0x00ff0000)>>16;
-        unsigned char third = (tmpInt & 0x0000ff00)>>8;
-        unsigned char fourth = tmpInt & 0x000000ff;
-        binData.push_back(first);
-        binData.push_back(second);
-        binData.push_back(third);
-        binData.push_back(fourth);
+        unsigned char ch = 0;
+        ch =  hextToUChar(*iter++);
+        ch <<= 4;
+        ch |= hextToUChar(*iter++);
+        result.push_back(ch);
     }
 
-    return binData;
+    return result;
+}
+
+std::string BigInteger::binaryToHex(const unsigned char *pData, int len) {
+    std::string hexString = "";
+    for(int i = 0 ; i < len; i++)
+    {
+        unsigned char ch = pData[i];
+        unsigned char byte = (ch & 0xf0)>>4;
+        auto bin2hex = [&](unsigned char temp)->void{
+            hexString.push_back(temp>9?'A' + temp - 10 : '0' + temp);
+        };
+        bin2hex(byte);
+        byte = (ch & 0x0f);
+        bin2hex(byte);
+    }
+    return hexString;
+}
+
+unsigned char BigInteger::hextToUChar(const char ch) const {
+    unsigned char ans = 0;
+    if (isdigit(ch))
+        ans = ch-'0';
+    else if (islower(ch))
+        ans = ch-'a'+10;
+    else
+        ans = ch-'A'+10;
+    return ans;
 }
 
 /**

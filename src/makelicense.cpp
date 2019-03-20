@@ -36,10 +36,11 @@ int main(int argc, char * argv[])
         std::cerr<<"read from license file failed, file size "<<size<<" but actually read "<<byteRead<<" bytes, errno is "<<errno<<std::endl;
         return -1;
     }
+    std::cout<<"content to be encrypted: "<<content<<"<<"<<std::endl;
     fclose(fp);
 
     //call encrypt function here
-    std::vector<unsigned char> cipher = RsaAlgrithm::encrypt(content, size, N, D);
+    std::string cipher = RsaAlgrithm::encrypt(content, size, N, D);
     FILE * licFile = fopen("ok.lic", "wb+");
     if( licFile == nullptr)
     {

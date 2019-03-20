@@ -77,6 +77,8 @@ protected:
 private:
     BigInteger trim();    // 去掉高位无用的0
     int hexToNum(char);    // 十六进制字符转换为十进制数
+    unsigned char hextToUChar(const char)const ;
+    std::string binaryToHex(const unsigned char * pData, int len);
 public:
     static const int base_bit = 5;    // 2^5=32,大整数每位存储的二进制位数
     static const int base_char = 8;    // 组成大整数的一位需要的十六进制位数

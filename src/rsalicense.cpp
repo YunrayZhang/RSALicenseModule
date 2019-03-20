@@ -1,25 +1,25 @@
 #include "rsalicense.h"
 #include "src/Base64.h"
 
-std::vector<unsigned char> RsaAlgrithm::encrypt(const unsigned char *msg, const int msgLen, const BigInteger &N,
-                                                const BigInteger &E) {
+std::string RsaAlgrithm::encrypt(const unsigned char *msg, int msgLen, const BigInteger &N,
+                                 const BigInteger &E) {
     BigInteger plainText(msg, msgLen);
     BigInteger cipher = plainText.modPow(E, N);
-
-    return cipher.toBinaryStream();
+    return cipher.toString();
 }
 
-std::vector<unsigned char> RsaAlgrithm::decrypt(const unsigned char *cipher, const int cipherLen, const BigInteger &N,
+std::vector<unsigned char> RsaAlgrithm::decrypt(const unsigned char *cipher, int cipherLen, const BigInteger &N,
                                                 const BigInteger &D) {
-    BigInteger cipherText(cipher, cipherLen);
+    std::string cipher_string = std::string((const char*)cipher);
+    BigInteger cipherText(cipher_string);
     BigInteger plainText = cipherText.modPow(D, N);
     return plainText.toBinaryStream();
 }
 
 std::string
 RsaAlgrithm::encrypt_base64ed(const unsigned char *msg, const int msgLen, const BigInteger &N, const BigInteger &E) {
-    std::vector<unsigned char> cipher_vec = encrypt(msg, msgLen, N, E);
-    return Base64::Encode(cipher_vec);
+    std::string cipher_string = encrypt(msg, msgLen, N, E);
+    return Base64::Encode(std::vector<unsigned char>(cipher_string.begin(), cipher_string.end()));
 }
 
 
