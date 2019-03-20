@@ -10,7 +10,7 @@ std::string RsaAlgrithm::encrypt(const unsigned char *msg, int msgLen, const Big
 
 std::vector<unsigned char> RsaAlgrithm::decrypt(const unsigned char *cipher, int cipherLen, const BigInteger &N,
                                                 const BigInteger &D) {
-    std::string cipher_string = std::string((const char*)cipher);
+    std::string cipher_string = std::string((const char*)cipher, cipherLen);
     BigInteger cipherText(cipher_string);
     BigInteger plainText = cipherText.modPow(D, N);
     return plainText.toBinaryStream();

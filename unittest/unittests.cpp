@@ -19,7 +19,8 @@ TEST(Base64Test, test_decode_when_input_QUJD_decodedto_abc)
 {
     std::string input = "QUJD";
     std::vector<unsigned char> result = Base64::Decode(input);
-    EXPECT_STREQ((char*)result.data(), "ABC");
+    std::vector<unsigned char> expect = {'A', 'B', 'C'};
+    EXPECT_EQ(expect, result);
 }
 
 TEST(RSALicenseLib, test_RSAEncode)
@@ -54,5 +55,6 @@ TEST(RSALicenseLib, test_RSADecodeBase64ed)
     std::string cipher = "MzFGOTA5NjRDREM1QTJFNzM3NUY0MTAzQTQ2NjdBN0Y3NERGM0U0QjIxNUJFRkI4RkNDNDg2NkFEOTY5MzIyNUUxOEQzQjRGRTJCNkMzQjYwNUQ4MzI4MUEyRDVENDA3MzkxQzVCOUE3RkY3REZGNDMzQTU2QjU0REM4QkI3QjI2RDMxRkVFNzZDNkQxOUJDMDVDNzE5ODFERkFDMzhEMUUzQzAwRTY0QkNCQTIxNzg3NzhCODI2QjgwMDUzQUE1NTVENjFBREYwODJEOUYyNzIwMzk5ODAyODk0NDlDNTdDQjBFNERCRjk1NDVDQjE2QjgxOTQxMEYwOTEzMDVCMA==";
     std::string expect = "hello world";
     std::vector<unsigned char> paintext = RsaAlgrithm::decrypt_base64ed(cipher, N, E);
+    std::cout<<paintext.data()<<std::endl;
     EXPECT_EQ(std::vector<unsigned char> (expect.begin(), expect.end()), paintext);
 }
