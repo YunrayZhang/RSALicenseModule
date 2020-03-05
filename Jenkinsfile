@@ -1,5 +1,5 @@
 stage('Build ') {
     // some block
-  cmake CMakeLists
+  cmake -f CMakeLists.txt
   make
 }
