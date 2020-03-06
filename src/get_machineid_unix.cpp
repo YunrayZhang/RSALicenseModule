@@ -11,7 +11,7 @@
 
 #include <sys/types.h>
 #include <sys/ioctl.h>
-
+#include <assert.h>
 #ifdef __APPLE__
 #include <sys/types.h>
 #include <sys/socket.h>
