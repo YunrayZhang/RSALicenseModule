@@ -6,6 +6,12 @@ pipeline{
         }
     }
     stages{
+        stage('Clean Workspace'){
+            steps{
+                echo 'clean the workspace'
+                sh 'rm -rf *'
+            }
+        }
         stage('Build'){
             steps{
                 echo 'start to compile and package the rtklib'
