@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.09)
+cmake_minimum_required(VERSION 3.0.9)
 project(RsaLicenseLib)
 
 set(CMAKE_CXX_STANDARD 14)
