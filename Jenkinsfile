@@ -17,7 +17,7 @@ pipeline{
                 echo 'start to compile and package the rtklib'
                 sh 'mkdir build'
                 dir('build'){
-                    sh 'cmake ../CMakeLists.txt'
+                    sh 'cmake -e chdir ../CMakeLists.txt'
                     sh 'make -f Makefile'
                 }
             }  
