@@ -16,7 +16,7 @@ pipeline{
             steps{
                 echo 'start to compile and package the rtklib'
                 sh 'mkdir build'
-                sh 'cd build&&cmake ../CMakeList.txt'
+                sh 'cd build&&cmake ../CMakeLists.txt'
                 sh 'cd build&&make'
             }  
         }
