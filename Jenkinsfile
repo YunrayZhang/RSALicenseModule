@@ -1,12 +1,17 @@
 pipeline{
-    agent any
+    agent{
+        node{
+            label 'master'
+            customWorkspace '/DATA/rtklib-ci-workspace'
+        }
+    }
     stages{
         stage('Build'){
             steps{
                 echo 'start to compile and package the rtklib'
                 sh 'mkdir build'
                 sh 'cd build'
-                sh 'cmake ../CMakelist.txt'
+                sh 'cmake ../CMakeList.txt'
                 sh 'make'
             }  
         }
