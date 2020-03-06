@@ -9,15 +9,17 @@ pipeline{
         stage('Clean Workspace'){
             steps{
                 echo 'clean the workspace'
-                sh 'rm -rf build'
+                sh 'git clean -fdx'
             }
         }
         stage('Build'){
             steps{
                 echo 'start to compile and package the rtklib'
                 sh 'mkdir build'
-                sh 'cd build&&cmake ../CMakeLists.txt'
-                sh 'cd build&&make'
+                dir('build'){
+                    sh 'cmake ../CMakeLists.txt'
+                    sh 'make -f Makefile'
+                }
             }  
         }
         stage('Deployment'){
