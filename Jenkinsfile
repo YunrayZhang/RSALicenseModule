@@ -9,7 +9,7 @@ pipeline{
         stage('Clean Workspace'){
             steps{
                 echo 'clean the workspace'
-                sh 'rm -rf *'
+                sh 'rm -rf build'
             }
         }
         stage('Build'){
