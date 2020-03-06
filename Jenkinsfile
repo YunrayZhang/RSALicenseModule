@@ -10,9 +10,8 @@ pipeline{
             steps{
                 echo 'start to compile and package the rtklib'
                 sh 'mkdir build'
-                sh 'cd build'
-                sh 'cmake ../CMakeList.txt'
-                sh 'make'
+                sh 'cd build&&cmake ../CMakeList.txt'
+                sh 'cd build&&make'
             }  
         }
         stage('Deployment'){
