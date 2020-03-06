@@ -9,7 +9,7 @@ pipeline{
         }
         stage('Send Report'){
         }
-        stage('Done'）{
+        stage('Done'){
         }
     }
 }
