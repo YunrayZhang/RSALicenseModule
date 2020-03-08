@@ -46,4 +46,16 @@ pipeline{
             }
         }
     }
+    post {
+        failure {
+            mail to: 'foolishx001@126.com',
+                 subject: "Failure of RTK-lib Pipeline: ${currentBuild.fullDisplayName}",
+                 body: "Something is wrong with ${env.BUILD_URL}"
+        }
+        success{
+            mail to: 'foolishx001j@126.com',
+                subject: 'Success of RTK-lib Pipeline: ${currentBuild.fullDisplayName}',
+                body: ' everything goes well with ${env.BUILD_URL}'
+        }
+}
 }
