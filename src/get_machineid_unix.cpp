@@ -25,7 +25,7 @@
 
 #include <sys/resource.h>
 #include <sys/utsname.h>
-
+#include <string.h>
 //---------------------------------get MAC addresses ---------------------------------
 // we just need this for purposes of unique machine id. So any one or two
 // mac's is fine.
