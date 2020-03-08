@@ -35,16 +35,6 @@ pipeline{
                 }
             }
         }
-        stage('Send Report'){
-            steps{
-                echo 'Distributing test reports to stakholders'
-            }
-        }
-        stage('Done'){
-            steps{
-                echo 'CI complete successfully'
-            }
-        }
     }
     post {
         failure {
@@ -53,7 +43,7 @@ pipeline{
                  body: "Something is wrong with ${env.BUILD_URL}"
         }
         success{
-            mail to: 'foolishx001j@126.com',
+            mail to: 'foolishx001@126.com',
                 subject: 'Success of RTK-lib Pipeline: ${currentBuild.fullDisplayName}',
                 body: ' everything goes well with ${env.BUILD_URL}'
         }
