@@ -38,14 +38,14 @@ pipeline{
     }
     post {
         failure {
-            mailext to: 'foolishx001@126.com',
+            mail( to: 'foolishx001@126.com',
                  subject: "Failure of RTK-lib Pipeline: ${currentBuild.fullDisplayName}",
                  body: "Something is wrong with ${env.BUILD_URL}",
-                 mimeType:'text/html'
+                 mimeType:'text/html')
 
         }
         success{
-            mailext( to: 'foolishx001@126.com',
+            mail( to: 'foolishx001@126.com',
                 subject: "Success of RTK-lib Pipeline: ${currentBuild.fullDisplayName}",
                 body:"Everything goes well with ${env.BUILD_URL}",
                 mimeType:'text/html')
