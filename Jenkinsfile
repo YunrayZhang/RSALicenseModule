@@ -38,9 +38,10 @@ pipeline{
     }
     post {
         failure {
-            mail to: 'foolishx001@126.com',
+            mailext to: 'foolishx001@126.com',
                  subject: "Failure of RTK-lib Pipeline: ${currentBuild.fullDisplayName}",
-                 body: "Something is wrong with ${env.BUILD_URL}    
+                 body: "Something is wrong with ${env.BUILD_URL}"
+                 memeType:'text/html'
 
         }
         success{
