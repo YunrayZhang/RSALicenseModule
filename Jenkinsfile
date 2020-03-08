@@ -31,7 +31,7 @@ pipeline{
             steps{
                 echo 'Run test for rtklib'
                 dir('build/output'){
-                    sh 'unittests'
+                    sh './unittests'
                 }
             }
         }
