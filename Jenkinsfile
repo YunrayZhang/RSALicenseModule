@@ -40,7 +40,7 @@ pipeline{
         failure {
             mail to: 'foolishx001@126.com',
                  subject: "Failure of RTK-lib Pipeline: ${currentBuild.fullDisplayName}",
-                 body: 'Something is wrong with ${env.BUILD_URL}<!DOCTYPE html>    
+                 body: '''Something is wrong with ${env.BUILD_URL}<!DOCTYPE html>    
 <html>    
 <head>    
 <meta charset="UTF-8">    
@@ -88,12 +88,12 @@ ${CHANGES_SINCE_LAST_SUCCESS, reverse=true, format="%c", changesFormat="<li>%d [
         </tr>    
     </table>    
 </body>    
-</html>'
+</html>'''
         }
         success{
             mail to: 'foolishx001@126.com',
                 subject: 'Success of RTK-lib Pipeline: ${currentBuild.fullDisplayName}',
-                body: ' <!DOCTYPE html>    
+                body: ''' <!DOCTYPE html>    
 <html>    
 <head>    
 <meta charset="UTF-8">    
@@ -141,7 +141,7 @@ ${CHANGES_SINCE_LAST_SUCCESS, reverse=true, format="%c", changesFormat="<li>%d [
         </tr>    
     </table>    
 </body>    
-</html>'
+</html>'''
         }
 }
 }
