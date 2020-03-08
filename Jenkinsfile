@@ -17,7 +17,7 @@ pipeline{
                 echo 'start to compile and package the rtklib'
                 sh 'mkdir build'
                 dir('build'){
-                    sh 'cmake -e chdir ../CMakeLists.txt'
+                    sh 'cmake -e  ../'
                     sh 'make -f Makefile'
                 }
             }  
@@ -30,6 +30,9 @@ pipeline{
         stage('Run Test'){
             steps{
                 echo 'Run test for rtklib'
+                dir('build/output'){
+                    sh 'unittests'
+                }
             }
         }
         stage('Send Report'){
