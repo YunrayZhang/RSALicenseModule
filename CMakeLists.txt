@@ -1,40 +1,19 @@
-cmake_minimum_required(VERSION 3.0.9)
-project(RsaLicenseLib)
+include(RegexUtils)
+test_escape_string_as_regex()
 
-set(CMAKE_CXX_STANDARD 14)
-set(OUTDIR ~zhangyl-j)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY output)
-add_subdirectory(gtest)
-#set(RSA_INCLUDE /Users/zhangyl-j/cryptopp)
+file(GLOB Eigen_directory_files "*")
 
-#include_directories(${RSA_INCLUDE})
+escape_string_as_regex(ESCAPED_CMAKE_CURRENT_SOURCE_DIR ".")
 
-#find_library(${RSA_INCLUDE}/cmake-build-debug cryptopp)
+foreach(f ${Eigen_directory_files})
+  if(NOT f MATCHES "\\.txt" AND NOT f MATCHES "${ESCAPED_CMAKE_CURRENT_SOURCE_DIR}/[.].+" AND NOT f MATCHES "${ESCAPED_CMAKE_CURRENT_SOURCE_DIR}/src")
+    list(APPEND Eigen_directory_files_to_install ${f})
+  endif()
+endforeach(f ${Eigen_directory_files})
 
-add_library(RsaLicenseLib STATIC src/biginteger.h src/biginteger.cpp src/rsalicense.cpp src/rsalicense.h src/Base64.h)
-add_library(RsaLicenseShared SHARED src/biginteger.h src/biginteger.cpp src/rsalicense.cpp src/rsalicense.h src/Base64.h)
-project(RSALicenseMaker)
-include_directories(CMAKE_CURRENT_LIST ./ gtest/include)
-link_libraries(RsaLicenseLib)
-add_executable(RSALicenseMaker src/makelicense.cpp)
+install(FILES
+  ${Eigen_directory_files_to_install}
+  DESTINATION ${INCLUDE_INSTALL_DIR}/Eigen COMPONENT Devel
+  )
 
-project(RSADecoder)
-link_libraries(RsaLicenseLib)
-add_executable(RSADecoder src/application_example.cpp)
-
-project(GetMachineFingerPrint)
-set(HEADER src/getmachineid_internal.h src/get_machineid_external.h)
-if (WIN32)
-    link_libraries(IPHLPAPI)
-    set(SOURCE src/get_machineid_win.cpp)
-else()
-    set(SOURCE src/get_machineid_unix.cpp)
-endif()
-add_executable(GetMachineFP ${HEADER} ${SOURCE} src/get_machineid_main.cpp src/get_machineid.cpp)
-install(TARGETS GetMachineFP
-        RUNTIME DESTINATION ${OUTDIR})
-
-project(unittests)
-link_directories(gtest/lib)
-link_libraries(gtest gtest_main)
-add_executable(unittests unittest/unittests.cpp)
+install(DIRECTORY src DESTINATION ${INCLUDE_INSTALL_DIR}/Eigen COMPONENT Devel FILES_MATCHING PATTERN "*.h")
